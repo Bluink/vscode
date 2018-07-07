@@ -544,6 +544,14 @@ export class EditorPart extends Part implements EditorGroupsServiceImpl, IEditor
 		// Mark group as new active
 		group.setActive(true);
 
+		// Maximize the group if it is currently minimized and we have a 1D-layout
+		if (this.gridWidget) {
+			const isSingleDimension = !this.isTwoDimensionalGrid();
+			if (isSingleDimension && this.gridWidget.getViewSize(group) === this.gridWidget.getMinimumViewSize(group)) {
+				this.arrangeGroups(GroupsArrangement.MINIMIZE_OTHERS);
+			}
+		}
+
 		// Event
 		this._onDidActiveGroupChange.fire(group);
 	}
